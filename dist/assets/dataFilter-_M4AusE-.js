@@ -1,0 +1,1 @@
+function l(r){return{seriesType:r,reset:function(f,i){var e=i.findComponents({mainType:"legend"});if(e&&e.length){var n=f.getData();n.filterSelf(function(a){for(var o=n.getName(a),t=0;t<e.length;t++)if(!e[t].isSelected(o))return!1;return!0})}}}}export{l as e};

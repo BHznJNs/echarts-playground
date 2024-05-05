@@ -1,0 +1,1 @@
+import{a as c}from"./index-B7CpzWKR.js";function i(a){var o=a.getData().tree,d={};o.eachNode(function(t){for(var e=t;e&&e.depth>1;)e=e.parentNode;var n=c(a.ecModel,e.name||e.dataIndex+"",d);t.setVisual("decal",n)})}export{i as a};

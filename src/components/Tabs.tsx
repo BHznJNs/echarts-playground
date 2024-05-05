@@ -1,5 +1,7 @@
 import { useState, SyntheticEvent } from 'react'
-import { Tabs as MuiTabs, Tab as MuiTab, Box } from '@mui/material'
+import { default as MuiTabs } from '@mui/material/Tabs'
+import { default as MuiTab } from '@mui/material/Tab'
+import Box from '@mui/material/Box'
 
 interface TabPanelProps {
   children: React.ReactNode,
@@ -13,11 +15,12 @@ function TabPanel(props: TabPanelProps) {
 
   return (
     <div
-      role="tabpanel"
+      role='tabpanel'
       hidden={isHiddden}
       style={{
-        display: isHiddden ? "none" : "block",
+        display: isHiddden ? 'none' : 'block',
         minWidth: 0,
+        minHeight: 0,
       }}
       {...other}
     >
@@ -42,15 +45,15 @@ function Tabs({ children }: {
   return (
     <>
       <Box sx={{
-        display: "grid",
-        gridTemplateRows: "auto 1fr",
-        height: "100%",
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr',
+        height: '100%',
       }}>
         <MuiTabs
           value={value}
           onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
+          variant='scrollable'
+          scrollButtons='auto'
         >
           {children.map((child, index) =>
             <MuiTab key={index} label={child.name} {...a11yProps(index)} />

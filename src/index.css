@@ -1,9 +1,6 @@
 body {
     margin: 0;
     background-color: #f7f7f7;
-    font-family:
-    /* en */ -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica Neue,Helvetica,Arial,
-    /* zh */ PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Source Han Sans CN,sans-serif;
 }
 
 #root {
@@ -17,21 +14,6 @@ body {
 #chart-container {
     position: relative;
     height: 100%;
-}
-
-#chart-container.syntax-error::before,
-#chart-container.render-error::before {
-    position: absolute;
-    bottom: .6rem;
-    right: .6rem;
-    color: #E53935;
-    font-size: 1.125rem;
-}
-#chart-container.syntax-error::before {
-    content: "Syntax Error!";
-}
-#chart-container.render-error::before {
-    content: "Render Error!";
 }
 
 .monaco-editor {

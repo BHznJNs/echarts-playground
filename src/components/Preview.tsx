@@ -1,27 +1,13 @@
 import { useRef, useEffect, useState } from 'react'
 import echarts, { importChart, importComponent } from '../echarts-lib/index.js'
-import echartsAnotherDarkTheme from '../echarts-lib/echartsAnotherDarkTheme.js'
 import { ECharts, EChartsOption, SeriesOption } from '../echarts-lib/echarts.js'
-import { debounce } from '@mui/material'
-
-echarts.registerTheme('another-dark', echartsAnotherDarkTheme)
+import Snackbar from '@mui/material/Snackbar'
+import debounce from '@mui/material/utils/debounce.js'
 
 interface LibsToImport {
   charts: Set<string>,
   components: Set<string>,
 }
-
-function getChartOption(chartContent: string): EChartsOption | null {
-  try {
-    return new Function(
-      'let option;'
-      + chartContent
-      + ';return option'
-    )()
-  } catch {}
-  return null
-}
-  
 
 function chartOptionResolver(option: EChartsOption): LibsToImport {
   const libsToImport: LibsToImport = {
@@ -98,11 +84,11 @@ async function importChartLibs(chartOption: EChartsOption) {
 }
 
 let chartInst: ECharts | null = null
-window.addEventListener("resize", debounce(() => {
+window.addEventListener('resize', debounce(() => {
   chartInst && chartInst.resize()
-}, 400))
+}, 100))
 
-function Preview({ chartContent }: { chartContent: string }) {
+function Preview({ option }: { option: EChartsOption | null }) {
   const [isSyntaxError, setIsSyntaxError] = useState<boolean>(false)
   const [isRenderError, setIsRenderError] = useState<boolean>(false)
   const chartContainer = useRef<HTMLDivElement>(null)
@@ -120,27 +106,40 @@ function Preview({ chartContent }: { chartContent: string }) {
   }
 
   useEffect(() => {
-    if (!chartContent || !chartContainer.current) {
+    setIsSyntaxError(option === null)
+    if (!option || !chartContainer.current) {
       return
     }
 
-    const optionalChartOption: EChartsOption | null = getChartOption(chartContent)
-    const chartOption: EChartsOption = optionalChartOption || {}
-    setIsSyntaxError(optionalChartOption === null)
-
-    importChartLibs(chartOption)
-      .then(() => renderChart(chartOption))
-  }, [chartContent])
+    importChartLibs(option)
+      .then(() => renderChart(option))
+  }, [option])
 
   return (
-    <div
-      id='chart-container'
-      className={[
-        isSyntaxError ? 'syntax-error' : undefined,
-        isRenderError ? 'render-error' : undefined,
-      ].join(' ')}
-      ref={chartContainer}
-    ></div>
+    <>
+      <div id='chart-container' ref={chartContainer}></div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={isSyntaxError}
+        autoHideDuration={5000}
+        onClose={() => setIsSyntaxError(false)}
+        message='Syntax Error!'
+      />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={isRenderError}
+        autoHideDuration={5000}
+        onClose={() => setIsRenderError(false)}
+        message='Render Error!'
+      />
+    </>
+
   )
 }
 

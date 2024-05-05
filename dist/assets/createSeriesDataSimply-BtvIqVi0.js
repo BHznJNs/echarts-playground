@@ -1,0 +1,1 @@
+import{j as d,D as c,dd as s,aM as m}from"./index-B3HKDY-B.js";function f(n,e,t){e=d(e)&&{coordDimensions:e}||c({encodeDefine:n.getEncode()},e);var o=n.getSource(),r=s(o,e).dimensions,i=new m(r,n);return i.initData(o,t),i}export{f as s};

@@ -1,1 +1,0 @@
-import{j as c,D as d,d8 as s,aN as m}from"./index-B7CpzWKR.js";function f(n,e,t){e=c(e)&&{coordDimensions:e}||d({encodeDefine:n.getEncode()},e);var o=n.getSource(),r=s(o,e).dimensions,i=new m(r,n);return i.initData(o,t),i}export{f as s};

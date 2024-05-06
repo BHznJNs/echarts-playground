@@ -1,1 +1,0 @@
-import{b1 as a,x as i}from"./index-B7CpzWKR.js";var u="\0_ec_interaction_mutex";function l(t,r,e){n(t)[r]=e}function f(t,r,e){var o=n(t);o[r]===e&&(o[r]=null)}function p(t,r){return!!n(t)[r]}function n(t){return t[u]||(t[u]={})}a({type:"takeGlobalCursor",event:"globalCursorTaken",update:"update"},i);export{f as e,p as o,l as r};

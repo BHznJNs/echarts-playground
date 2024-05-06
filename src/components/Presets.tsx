@@ -11,6 +11,11 @@ import BarSimpleImage from '../assets/bar-simple.webp'
 import ScatterSimpleImage from '../assets/scatter-simple.webp'
 import PieDoughnutImage from '../assets/pie-doughnut.webp'
 import RadarSampleImage from '../assets/radar.webp'
+import LineSimpleDarkImage from '../assets/line-simple-dark.webp'
+import BarSimpleDarkImage from '../assets/bar-simple-dark.webp'
+import ScatterSimpleDarkImage from '../assets/scatter-simple-dark.webp'
+import PieDoughnutDarkImage from '../assets/pie-doughnut-dark.webp'
+import RadarSampleDarkImage from '../assets/radar-dark.webp'
 
 export enum ChartType {
   Line,
@@ -20,12 +25,12 @@ export enum ChartType {
   Radar,
 }
 
-const presetChartData: [string, ChartType, string][] = [
-  ['Basic Line Chart'   , ChartType.Line   , LineSimpleImage],
-  ['Basic Bar Chart'    , ChartType.Bar    , BarSimpleImage],
-  ['Basic Scatter Chart', ChartType.Scatter, ScatterSimpleImage],
-  ['Pie Doughnut Chart' , ChartType.Pie    , PieDoughnutImage],
-  ['Basic Radar Chart'  , ChartType.Radar  , RadarSampleImage],
+const presetChartData: [string, ChartType, string, string][] = [
+  ['Basic Line Chart'   , ChartType.Line   , LineSimpleImage   , LineSimpleDarkImage],
+  ['Basic Bar Chart'    , ChartType.Bar    , BarSimpleImage    , BarSimpleDarkImage],
+  ['Basic Scatter Chart', ChartType.Scatter, ScatterSimpleImage, ScatterSimpleDarkImage],
+  ['Pie Doughnut Chart' , ChartType.Pie    , PieDoughnutImage  , PieDoughnutDarkImage],
+  ['Basic Radar Chart'  , ChartType.Radar  , RadarSampleImage  , RadarSampleDarkImage],
 ]
 
 interface CardItemProps {
@@ -46,6 +51,7 @@ function CardItem({
       <CardMedia
         component='img'
         image={image}
+        loading='lazy'
       />
       <CardContent>
         <Typography>{description}</Typography>
@@ -57,8 +63,9 @@ function CardItem({
   )
 }
 
-function Presets({applyPreset}: {
-  applyPreset: (i: ChartType) => void
+function Presets({applyPreset, mode}: {
+  applyPreset: (i: ChartType) => void,
+  mode: string,
 }) {
   return (
     <Box sx={{
@@ -70,11 +77,11 @@ function Presets({applyPreset}: {
         sx={{padding: '.8rem .8rem 1.6rem'}}
       >
         {presetChartData.map(([
-          description, identifier, image
-        ]: [string, ChartType, string], index) => 
+          description, identifier, imageLight, imageDark
+        ]: [string, ChartType, string, string], index) => 
           <CardItem
             key={index}
-            image={image}
+            image={mode === 'light' ? imageLight : imageDark}
             description={description}
             identifier={identifier}
             applyCallback={applyPreset}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useImperativeHandle, Ref, forwardRef } from 'react'
+import { useEffect, useMemo, useRef, useImperativeHandle, Ref, forwardRef } from 'react'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import 'monaco-editor/esm/vs/basic-languages/typescript/typescript.contribution'
@@ -22,8 +22,9 @@ export interface EditorMethods {
   setValue: (newValue: string) => void,
 }
 
-function Editor({onEdited}: {
+function Editor({onEdited, mode}: {
   onEdited: (...args: any[]) => any,
+  mode: string,
 }, ref: Ref<EditorMethods>) {
   type MonacoEditor = monaco.editor.IStandaloneCodeEditor
   const editorContainer = useRef<HTMLDivElement>(null)
@@ -44,6 +45,12 @@ function Editor({onEdited}: {
       onEdited(editorValue)
     }, 1000))
   }, [])
+
+  useMemo(() => {
+    const isDark = mode === 'dark'
+    const getTheme = (isDark: boolean) => isDark ? 'vs-dark' : 'vs'
+    monaco.editor.setTheme(getTheme(isDark))
+  }, [mode])
 
   useImperativeHandle(ref, () => ({
     getValue() {

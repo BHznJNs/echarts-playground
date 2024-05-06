@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import echarts, { importChart, importComponent } from '../echarts-lib/index.js'
 import { ECharts, EChartsOption, SeriesOption } from '../echarts-lib/echarts.js'
+import { chartIgnoredProps } from './Analyzer.js'
 import Snackbar from '@mui/material/Snackbar'
 import debounce from '@mui/material/utils/debounce.js'
 
@@ -9,38 +10,14 @@ interface LibsToImport {
   components: Set<string>,
 }
 
-function chartOptionResolver(option: EChartsOption): LibsToImport {
+function chartOptionResolve(option: EChartsOption): LibsToImport {
   const libsToImport: LibsToImport = {
     charts: new Set(),
     components: new Set(),
   }
-  const ignoredProps: string[] = [
-    'width',
-    'height',
-    'color',
-    'backgroundColor',
-    'darkMode',
-    'textStyle',
-    'aria',
-    'axisPointer',
-    'animation',
-    'animationThreshold',
-    'animationDuration',
-    'animationEasing',
-    'animationDelay',
-    'animationDurationUpdate',
-    'animationEasingUpdate',
-    'animationDelayUpdate',
-    'stateAnimation',
-    'blendMode',
-    'hoverLayerThreshold',
-    'options',
-    'useUTC',
-    'media',
-  ]
 
   for (const key in option) {
-    if (ignoredProps.includes(key)) {
+    if (chartIgnoredProps.includes(key)) {
       continue
     }
     if (key === 'series') {
@@ -74,7 +51,7 @@ function chartOptionResolver(option: EChartsOption): LibsToImport {
 }
 
 async function importChartLibs(chartOption: EChartsOption) {
-  const libsToImport = chartOptionResolver(chartOption)
+  const libsToImport = chartOptionResolve(chartOption)
 
   const chartsToImport = Array.from(libsToImport.charts).map(importChart)
   const componentsToImport = Array.from(libsToImport.components).map(importComponent)
@@ -88,14 +65,17 @@ window.addEventListener('resize', debounce(() => {
   chartInst && chartInst.resize()
 }, 100))
 
-function Preview({ option }: { option: EChartsOption | null }) {
+function Preview({ mode, option }: {
+  mode: string,
+  option: EChartsOption | null,
+}) {
   const [isSyntaxError, setIsSyntaxError] = useState<boolean>(false)
   const [isRenderError, setIsRenderError] = useState<boolean>(false)
   const chartContainer = useRef<HTMLDivElement>(null)
 
-  function renderChart(chartOption: EChartsOption) {
+  function renderChart(chartOption: EChartsOption, mode: string = 'light') {
     chartInst && chartInst.dispose()
-    const newChartInst: ECharts = echarts.init(chartContainer.current)
+    const newChartInst: ECharts = echarts.init(chartContainer.current, mode)
     chartInst = newChartInst
     try {
       newChartInst.setOption(chartOption)
@@ -112,8 +92,8 @@ function Preview({ option }: { option: EChartsOption | null }) {
     }
 
     importChartLibs(option)
-      .then(() => renderChart(option))
-  }, [option])
+      .then(() => renderChart(option, mode))
+  }, [mode, option])
 
   return (
     <>

@@ -1,7 +1,6 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import TitleBar from './components/TitleBar.tsx'
-import Main from './components/Main.tsx'
+import App from './App'
 import './index.css'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -9,8 +8,7 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <TitleBar/>
-    <Main/>
-  </React.StrictMode>,
+  <StrictMode>
+    <App/>
+  </StrictMode>
 )

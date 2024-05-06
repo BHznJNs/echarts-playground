@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper'
 import Tabs from './Tabs'
 import Editor, { EditorMethods } from './Editor'
 import Preview from './Preview'
+import Analyzer from './Analyzer'
 import Presets, { ChartType } from './Presets'
 import chartOptionParser from './chartOptionParser'
 import { EChartsOption } from '../echarts-lib/echarts'
@@ -41,7 +42,7 @@ function Subfield({children, ratio}: {
   )
 }
 
-function Main() {
+function Main({mode}: {mode: string}) {
   const editor = useRef<EditorMethods>(null)
   const [editorContent, setEditorContent] = useState<string>('')
   const [chartOption, setChartOption] = useState<EChartsOption | null>(null)
@@ -60,13 +61,13 @@ function Main() {
     <Grid container sx={{ height: '100%', minHeight: 0 }}>
       <Subfield ratio={5}>
         <Tabs children={[
-          {name: 'Editor', element: <Editor ref={editor} onEdited={setEditorContent}/>},
-          {name: 'Analysis', element: <div>test content 2</div>},
-          {name: 'Presets', element: <Presets applyPreset={applyPreset}/>}
+          {name: 'Editor', element: <Editor ref={editor} mode={mode} onEdited={setEditorContent}/>},
+          {name: 'Analysis', element: <Analyzer option={chartOption}/>},
+          {name: 'Presets', element: <Presets mode={mode} applyPreset={applyPreset}/>}
         ]}/>
       </Subfield>
       <Subfield ratio={7}>
-        <Preview option={chartOption}/>
+        <Preview mode={mode} option={chartOption}/>
       </Subfield>
     </Grid>
   )
